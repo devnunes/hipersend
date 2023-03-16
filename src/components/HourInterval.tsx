@@ -30,12 +30,14 @@ const HourInterval: React.FC<Props> = (props) => {
         label="Início"
         value={startHour}
         onChange={(newValue) => setStartHour(newValue)}
+        sx={{ "& .MuiInputBase-input": { height: 4 } }}
       />
       <Typography>até</Typography>
       <TimePicker
         label="Fim"
         value={endhour}
         onChange={(newValue) => setEndhour(newValue)}
+        sx={{ "& .MuiInputBase-input": { height: 4 } }}
       />
     </Box>
   );
