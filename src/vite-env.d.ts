@@ -4,9 +4,11 @@
 // }
 
 type Day = "Dom" | "Seg" | "Ter" | "Quar" | "Quin" | "Sex" | "Sab";
-interface Iday {
-  day: Day;
+interface IDay {
+  name: Day;
   acronym: string;
-  value: false;
+  value: boolean;
+  startHour: string;
+  endHour: string;
 }
 type IdayChecks = IDay[];

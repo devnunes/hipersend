@@ -4,11 +4,11 @@ import { TimePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 
 interface Props extends BoxProps {
-  day: Iday;
+  day: IDay;
 }
 
 const HourInterval: React.FC<Props> = (props) => {
-  const { day } = props.day;
+  const { name } = props.day;
   const [startHour, setStartHour] = React.useState<Dayjs | null>(
     dayjs("2023-04-17T15:30")
   );
@@ -25,7 +25,7 @@ const HourInterval: React.FC<Props> = (props) => {
         width: "100%",
       }}
     >
-      <Typography minWidth={"35px"}>{day}</Typography>
+      <Typography minWidth={"35px"}>{name}</Typography>
       <TimePicker
         label="Início"
         value={startHour}
