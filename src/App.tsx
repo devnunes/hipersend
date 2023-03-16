@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Container,
   Box,
@@ -8,133 +9,84 @@ import {
   MenuItem,
   CssBaseline,
 } from "@mui/material";
-import { useState } from "react";
-
 import CheckboxButton from "./components/CheckboxButton";
+import HourInterval from "./components/HourInterval";
 
-const flexCenter = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
+const styles = {
+  flexCenter: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  day: {},
 };
 
-type Day =
-  | "sunday"
-  | "monday"
-  | "tuesday"
-  | "wednesday"
-  | "thursday"
-  | "friday"
-  | "saturday";
-
-interface IdayChecks {
-  sunday: boolean;
-  monday: boolean;
-  tuesday: boolean;
-  wednesday: boolean;
-  thursday: boolean;
-  friday: boolean;
-  saturday: boolean;
-}
-
 function App() {
-  const [daysChecked, setDaysChecked] = useState({
-    sunday: false,
-    monday: false,
-    tuesday: false,
-    wednesday: false,
-    thursday: false,
-    friday: false,
-    saturday: false,
-  } as IdayChecks);
+  const [daysChecked, setDaysChecked] = useState([
+    { day: "Dom", acronym: "D", value: false },
+    { day: "Seg", acronym: "S", value: false },
+    { day: "Ter", acronym: "T", value: false },
+    { day: "Quar", acronym: "Q", value: false },
+    { day: "Quin", acronym: "Q", value: false },
+    { day: "Sex", acronym: "S", value: false },
+    { day: "Sab", acronym: "S", value: false },
+  ] as IdayChecks);
 
   const handleCheck = (day: Day) => {
     setDaysChecked((oldData) => {
-      const dataUpdated = {
-        ...oldData,
-        [day]: !oldData[day],
-      };
+      const dataUpdated = oldData.map((item) => {
+        if (item.day === day) item.value = !item.value;
+        return item;
+      });
       return dataUpdated;
     });
   };
 
   return (
     <Container
-      maxWidth="xl"
+      maxWidth="sm"
       sx={{
-        ...flexCenter,
+        ...styles.flexCenter,
         height: "100vh",
         flexDirection: "column",
       }}
     >
-      <Box sx={{ ...flexCenter, flexDirection: "column" }}>
+      <Box sx={{ ...styles.flexCenter, flexDirection: "column" }}>
         <Typography>Configuração jornada de trabalho</Typography>
         <Typography>
           <Checkbox />
           Ativar horário de trabalho
         </Typography>
 
-        <InputLabel id="jornadaTrabalho">
-          Configuração jornada de trabalho
-        </InputLabel>
-        <Select size="small" labelId="jornadaTrabalho" onChange={() => {}}>
+        <Select size="small" sx={{ width: "100%" }} onChange={() => {}}>
           <MenuItem defaultChecked value={2}>
             Enviar no próximo expediente
           </MenuItem>
           <MenuItem value={1}>Abortar</MenuItem>
         </Select>
       </Box>
-      <Box sx={{ ...flexCenter }}>
-        <CheckboxButton
-          checked={daysChecked.sunday}
-          onChange={() => {
-            handleCheck("sunday");
-          }}
-          label="D"
-        />
-        <CheckboxButton
-          checked={daysChecked.monday}
-          onChange={() => {
-            handleCheck("monday");
-          }}
-          label="S"
-        />
-        <CheckboxButton
-          checked={daysChecked.tuesday}
-          onChange={() => {
-            handleCheck("tuesday");
-          }}
-          label="T"
-        />
-        <CheckboxButton
-          checked={daysChecked.wednesday}
-          onChange={() => {
-            handleCheck("wednesday");
-          }}
-          label="Q"
-        />
-        <CheckboxButton
-          checked={daysChecked.thursday}
-          onChange={() => {
-            handleCheck("thursday");
-          }}
-          label="Q"
-        />
-        <CheckboxButton
-          checked={daysChecked.friday}
-          onChange={() => {
-            handleCheck("friday");
-          }}
-          label="S"
-        />
-        <CheckboxButton
-          checked={daysChecked.saturday}
-          onChange={() => {
-            handleCheck("saturday");
-          }}
-          label="S"
-        />
+      <Box sx={{ ...styles.flexCenter }}>
+        {daysChecked &&
+          daysChecked.map((item) => (
+            <CheckboxButton
+              key={item.day}
+              checked={item.value}
+              onChange={() => {
+                handleCheck(item.day);
+              }}
+              label={item.acronym}
+              sx={{
+                margin: 2,
+              }}
+            />
+          ))}
       </Box>
+
+      {daysChecked.map((item) => {
+        return item.value ? (
+          <HourInterval sx={{ height: "1rem" }} key={item.day} day={item} />
+        ) : null;
+      })}
 
       <CssBaseline />
     </Container>
